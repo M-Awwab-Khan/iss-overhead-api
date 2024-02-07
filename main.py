@@ -1,6 +1,7 @@
 import requests
 import datetime as dt
 import smtplib
+import time
 
 MY_EMAIL = '<enter your email>'
 MY_PASSWORD = '<enter your password>'
@@ -31,12 +32,14 @@ def is_dark():
     hour = dt.datetime.now().hour()
     return (hour >= sunset) and (hour <= sunrise)
 
-if is_close() and is_dark():
-    with smtplib.SMTP('smtp.gmail.com') as connection:
-        connection.starttls()
-        connection.login(user=MY_EMAIL, password=MY_PASSWORD)
-        connection.sendmail(
-            from_addr=MY_EMAIL,
-            to_addrs=MY_EMAIL,
-            msg='Subject:Watch out for ISS Satellite\n\nISS Satellite is overhead and it is a good time to see it.'
-        )
+while True:
+    time.sleep(60)
+    if is_close() and is_dark():
+        with smtplib.SMTP('smtp.gmail.com') as connection:
+            connection.starttls()
+            connection.login(user=MY_EMAIL, password=MY_PASSWORD)
+            connection.sendmail(
+                from_addr=MY_EMAIL,
+                to_addrs=MY_EMAIL,
+                msg='Subject:Watch out for ISS Satellite\n\nISS Satellite is overhead and it is a good time to see it.'
+            )
